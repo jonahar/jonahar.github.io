@@ -7,26 +7,23 @@
     <base target="_blank">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-171615915-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-
         gtag('config', 'UA-171615915-1');
     </script>
 </head>
 
 <body>
     <div id="center_container">
-        <div style="display: flex;">
-
-            <!-- data column -->
-            <div style="flex: 60%;">
-
+        <div id="main">
+            <div id=main_primary>
                 <header>Jona Harris</header>
-
                 <div class="section">
                     <div class="section_title">About</div>
                     <div class="section_content">
@@ -65,13 +62,15 @@
                         Contact me at <a href="mailto:jonahar@gmail.com">jonahar@gmail.com</a>
                     </div>
                 </div>
+
             </div>
 
-            <!-- image column -->
-            <div style="flex: 40%;">
-                <img src="profile.jpg" align="right" width=90%>
+            <div id=main_secondary>
+                <div id=profile_pic>
+                    <img src="profile.jpg" align="right" width=90%>
+                </div>
 
-                <div style="float: right; padding-top: 20px;">
+                <div id="social_buttons">
                     <span class="icon">
                         <a href="https://www.linkedin.com/in/jona-harris"><i class="fa fa-linkedin-square"></i></a>
                     </span>
@@ -81,19 +80,19 @@
                     </span>
                 </div>
             </div>
-
         </div>
 
-        <hr class="solid">
+        <div id="epilogue">
+            <hr class="solid">
 
-        <div class="quote">
-            “Not everyone can become a great artist, but a great artist can come from anywhere”
+            <div class="quote">
+                “Not everyone can become a great artist, but a great artist can come from anywhere”
+            </div>
+
+            <p style="margin-top: 2cm; text-align: right;">
+                Last updated: 2020-06
+            </p>
         </div>
-
-        <p style="margin-top: 2cm; text-align: right;">
-            Last updated: 2020-06
-        </p>
-
     </div>
 </body>
 

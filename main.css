@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=PT+Sans&family=Roboto&family=Old+Standard+TT&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans&family=Old+Standard+TT&display=swap');
 body {
     width: 100%;
     text-align: center;
@@ -9,6 +9,28 @@ body {
     width: 900px;
     text-align: left;
     margin: 0px auto;
+}
+
+#main {
+    display: flex;
+}
+
+#main_primary {
+    flex: 60%;
+}
+
+#main_secondary {
+    flex: 40%;
+}
+
+#social_buttons {
+    float: right;
+    padding-top: 20px;
+}
+
+#profile_pic {
+    width: 100%;
+    flex: none;
 }
 
 header {
@@ -59,4 +81,8 @@ a {
 
 .icon {
     font-size: 45px;
+}
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
 }
