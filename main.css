@@ -24,7 +24,6 @@ body {
 
 #main_secondary {
     width: 40%;
-    text-align: right;
 }
 
 #profile_pic_container {
@@ -34,11 +33,11 @@ body {
 #profile_pic_inner {
     width: 90%;
     margin-left: auto;
-    margin-right: 0;
+    margin-right: auto;
 }
 
 #social_buttons {
-    float: right;
+    margin-top: 10px;
 }
 
 header {
@@ -119,10 +118,6 @@ a {
         /* padding: 3px; */
         margin-left: auto;
         margin-right: auto;
-    }
-    #social_buttons {
-        float: initial;
-        margin-top: 30px;
     }
     .section_title {
         font-size: 32px;
