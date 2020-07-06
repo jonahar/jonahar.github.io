@@ -1,27 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=PT+Sans&family=Old+Standard+TT&display=swap');
 body {
-    width: 100%;
+    width: auto;
     text-align: center;
     background-color: #f5f5f5;
 }
 
 #center_container {
-    width: 900px;
-    text-align: left;
+    width: 70%;
+    max-width: 900px;
+    text-align: center;
     margin: 0px auto;
 }
 
 #main {
     display: flex;
-    flex-direction: row
+    flex-direction: row;
 }
 
 #main_primary {
     width: 60%;
+    text-align: left;
 }
 
 #main_secondary {
     width: 40%;
+    text-align: right;
 }
 
 #profile_pic_container {
@@ -88,6 +91,40 @@ a {
     font-size: 45px;
 }
 
-@media only screen and (max-width: 768px) {
-    /* For mobile phones: */
+@media screen and (max-width: 720px) {
+    /* mobile */
+    #center_container {
+        width: auto;
+        text-align: left;
+        margin: 0px auto;
+    }
+    #main {
+        display: block;
+        flex-direction: initial;
+    }
+    #main_primary {
+        width: auto;
+    }
+    #main_secondary {
+        width: auto;
+        text-align: center;
+    }
+    #profile_pic_container {
+        width: 100%;
+    }
+    #profile_pic_inner {
+        width: 90%;
+        /* display: inline-block; */
+        /* margin: 0 auto; */
+        /* padding: 3px; */
+        margin-left: auto;
+        margin-right: auto;
+    }
+    #social_buttons {
+        float: initial;
+        margin-top: 30px;
+    }
+    .section_title {
+        font-size: 32px;
+    }
 }
