@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=PT+Sans&family=Roboto&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans&family=Roboto&family=Old+Standard+TT&display=swap');
 body {
     width: 100%;
     text-align: center;
@@ -47,10 +46,10 @@ hr.solid {
 }
 
 .quote {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 20px;
+    font-family: 'Old Standard TT', serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 17px;
     text-align: center;
 }
 
