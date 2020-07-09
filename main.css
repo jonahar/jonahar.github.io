@@ -96,6 +96,12 @@ i {
     font-size: 45px;
 }
 
+#last_updated {
+    margin-top: 2cm;
+    text-align: right;
+    font-size: 12px;
+}
+
 @media screen and (max-width: 720px) {
     /* mobile */
     #center_container {
