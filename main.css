@@ -41,6 +41,9 @@ body {
 }
 
 a, header, .section_title {
+    /* red */
+    /* color: #ef594a; */
+    /* blue */
     color: rgba(34, 110, 147, 1);
 }
 
@@ -102,7 +105,7 @@ i {
     font-size: 12px;
 }
 
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 870px) {
     /* mobile */
     #center_container {
         width: auto;
