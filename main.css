@@ -74,6 +74,10 @@ header {
     font-family: "PT Sans", sans-serif;
 }
 
+.publication_title {
+    font-weight: bold;
+}
+
 hr.solid {
     border-top: 1px solid #bbb;
     margin-top: 100px;
