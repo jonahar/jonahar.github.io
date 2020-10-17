@@ -13,7 +13,10 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-171615915-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
         gtag('js', new Date());
         gtag('config', 'UA-171615915-1');
     </script>
@@ -28,9 +31,7 @@
                     <div class="section_title">About</div>
                     <div class="section_content">
                         I'm a M.Sc. student at
-                        <a href="https://cs.huji.ac.il/">The Hebrew University of Jerusalem</a>.
-                        My research interests include cryptocurrency protocols, cryptography and security.
-                        I'm also passionate about coding and designing large systems.
+                        <a href="https://cs.huji.ac.il/">The Hebrew University of Jerusalem</a>. My research interests include cryptocurrency protocols, cryptography and security. I'm also passionate about coding and designing large systems.
                     </div>
                 </div>
 
@@ -93,6 +94,16 @@
             <div class="quote">
                 “Not everyone can become a great artist, but a great artist can come from anywhere”
             </div>
+
+            <script>
+                function play() {
+                    var audio = document.getElementById("audio");
+                    audio.play();
+                }
+            </script>
+
+            <span class="play_button"><i class="fa fa-play-circle" onclick="play()"></i></span>
+            <audio id="audio" src="ego-quote.webm"></audio>
 
             <p id="last_updated">
                 Last updated: 2020-07
