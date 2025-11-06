@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=PT+Sans&family=Old+Standard+TT&display=swap');
+
 body {
     width: auto;
     text-align: center;
@@ -34,6 +35,10 @@ body {
     width: 90%;
     margin-left: auto;
     margin-right: auto;
+}
+
+#profile_pic_inner img {
+    border-radius: 22px;
 }
 
 #social_buttons {
@@ -116,25 +121,31 @@ i {
 }
 
 @media screen and (max-width: 870px) {
+
     /* mobile */
     #center_container {
         width: auto;
         margin: 0px auto;
     }
+
     #main {
         display: block;
         flex-direction: initial;
     }
+
     #main_primary {
         width: auto;
     }
+
     #main_secondary {
         width: auto;
         text-align: center;
     }
+
     #profile_pic_container {
         width: 100%;
     }
+
     #profile_pic_inner {
         width: 90%;
         /* display: inline-block; */
@@ -143,6 +154,7 @@ i {
         margin-left: auto;
         margin-right: auto;
     }
+
     .section_title {
         font-size: 32px;
     }
