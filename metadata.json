@@ -1,0 +1,6 @@
+{
+  "name": "Leizy Haris Jerusalem Tour Guide",
+  "description": "האתר הרשמי של לייזי הריס, מורה דרך מוסמך בירושלים. סיורים מרתקים בעיר העתיקה, שכונת הכורדים וסמטאותיה ההיסטוריות של ירושלים.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

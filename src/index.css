@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;800;900&family=Heebo:wght@300;400;500;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Frank Ruhl Libre", Georgia, serif;
+  --font-sans: "Heebo", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-stone-warm: #FDFBF7;
+  --color-olive-deep: #2F3E33;
+  --color-olive-muted: #4E5E52;
+  --color-gold-antique: #C5A059;
+  --color-gold-light: #DFCDAA;
+  --color-basalt: #1A1C18;
+}
+
+/* Base custom styles to ensure site is beautiful */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-stone-warm);
+  color: var(--color-basalt);
+  direction: rtl;
+}
+
+/* Shimmer helper */
+@keyframes shimmer {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(
+    -90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: translateX(100%);
+}
+
+.animate-shimmer:hover::after {
+  animation: shimmer 1.5s infinite;
+}
