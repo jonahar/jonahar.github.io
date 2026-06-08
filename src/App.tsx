@@ -12,6 +12,7 @@ import Testimonials from './components/Testimonials';
 import Footer from './components/Footer';
 import LinksPage from './components/LinksPage';
 import TourDetailsPage from './components/TourDetailsPage';
+import NotFoundPage from './components/NotFoundPage';
 import { TOURS_DATA } from './data';
 
 export default function App() {
@@ -41,10 +42,12 @@ export default function App() {
     }
   };
 
+  const isHomePage = currentPath === '/';
   const isLinksPage = currentPath === '/business-card';
   const isTourPage = currentPath.startsWith('/tour/');
   const tourId = isTourPage ? currentPath.split('/tour/')[1] : null;
   const selectedTour = tourId ? TOURS_DATA.find((t) => t.id === tourId) : null;
+  const isNotFound = !isHomePage && !isLinksPage && !(isTourPage && selectedTour);
 
   return (
     <div
@@ -59,6 +62,8 @@ export default function App() {
           <TourDetailsPage tour={selectedTour} onGoBack={() => handleNavigate('/')} />
           <Footer />
         </div>
+      ) : isNotFound ? (
+        <NotFoundPage onGoHome={() => handleNavigate('/')} />
       ) : (
         <div className="flex flex-col min-h-screen">
           <Navbar onNavigate={handleNavigate} activePath={currentPath} />
