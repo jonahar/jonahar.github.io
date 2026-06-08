@@ -5,8 +5,15 @@
 
 import { Tour, ContactInfo, BioLink, Testimonial } from './types';
 
-export const HERO_BACKGROUND = '/src/assets/images/jerusalem_hero_1780897869785.png';
-export const LEIZY_AVATAR = '/src/assets/images/leizy_avatar_1780897887267.png';
+import jerusalemHero from './assets/images/jerusalem_hero_1780897869785.png';
+import leizyAvatar from './assets/images/leizy_avatar_1780897887267.png';
+import oldCityTour from './assets/images/old_city_tour_1780897918120.png';
+import oldCityDetailed1 from './assets/images/old_city_detailed_1_1780900859921.png';
+import kurdishTour from './assets/images/kurdish_tour_1780897901832.png';
+import kurdishDetailed1 from './assets/images/kurdish_detailed_1_1780900876006.png';
+
+export const HERO_BACKGROUND = jerusalemHero;
+export const LEIZY_AVATAR = leizyAvatar;
 
 export const CONTACT_DATA: ContactInfo = {
   phone: '054-788-7355',
@@ -25,7 +32,7 @@ export const TOURS_DATA: Tour[] = [
     id: 'old-city',
     title: 'סיור העיר העתיקה',
     description: 'מסע קסום ומרתק בזמן דרך ארבעת הרובעים של העיר העתיקה. נבקר בשערים המרכזיים, נלך בנתיבי ההיסטוריה הרומית והצלבנית, נתחקה אחר האמונות המרכזיות ונרגיש את הדופק החי של המזרח התיכון.',
-    imageUrl: '/src/assets/images/old_city_tour_1780897918120.png',
+    imageUrl: oldCityTour,
     duration: '3 שעות',
     groupSize: 'עד 15 איש',
     meetingPoint: 'שער יפו',
@@ -43,16 +50,16 @@ export const TOURS_DATA: Tour[] = [
       { name: 'שוק הבזאר והסמטאות הצבעוניות', description: 'ריחות התבלינים, הדיאלקטים המגוונים וסיפורי הסוחרים המקומיים שעוברים מדור לדור מאב לבן.' }
     ],
     gallery: [
-      '/src/assets/images/old_city_tour_1780897918120.png',
-      '/src/assets/images/old_city_detailed_1_1780900859921.png',
-      '/src/assets/images/jerusalem_hero_1780897869785.png'
+      oldCityTour,
+      oldCityDetailed1,
+      jerusalemHero
     ]
   },
   {
     id: 'kurdish',
     title: 'שכונת הכורדים',
     description: 'סיור ססגוני ואותנטי מחוץ לחומות, בשבילים המרוצפים ובסמטאות האבן הצרות של השכונה המרתקת. נשמע את סיפורי המזמורים, היציאה מהחומות, ההווי המשפחתי ונטעם את האווירה הייחודית של פעם.',
-    imageUrl: '/src/assets/images/kurdish_tour_1780897901832.png',
+    imageUrl: kurdishTour,
     duration: '2 שעות',
     groupSize: 'עד 10 איש',
     meetingPoint: 'שער שכם',
@@ -70,9 +77,9 @@ export const TOURS_DATA: Tour[] = [
       { name: 'סמטאות האבן ומפגש תושבים', description: 'נפגוש את הדמויות הבלתי נשכחות של השכונה ונשמע מהן סיפורים מכלי ראשון על ירושלים של פעם.' }
     ],
     gallery: [
-      '/src/assets/images/kurdish_tour_1780897901832.png',
-      '/src/assets/images/kurdish_detailed_1_1780900876006.png',
-      '/src/assets/images/jerusalem_hero_1780897869785.png'
+      kurdishTour,
+      kurdishDetailed1,
+      jerusalemHero
     ]
   },
 ];
