@@ -1,0 +1,33 @@
+# dependencies
+node_modules
+dist
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# local env
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Keep CNAME and assets at root for legacy, but public is source of truth for build
+# Uncomment if you want to ignore legacy files:
+# main.css
+# index.html legacy will be removed after migration - keeping for reference until clean
