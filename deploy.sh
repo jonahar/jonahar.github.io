@@ -26,5 +26,12 @@ cp -a dist/. "$WT"/
 touch "$WT/.nojekyll"
 
 git -C "$WT" add -A
-git -C "$WT" commit -m "Deploy $(git rev-parse --short HEAD)" || echo "Nothing to deploy."
-echo "Done. Push with: git push origin gh-pages"
+if git -C "$WT" diff --cached --quiet; then
+  echo "No new changes to commit."
+else
+  git -C "$WT" commit -m "Deploy $(git rev-parse --short HEAD)"
+fi
+
+# Always push so an existing-but-unpushed gh-pages commit still reaches origin.
+git -C "$ROOT" push origin gh-pages
+echo "Pushed gh-pages to origin."
