@@ -4,11 +4,6 @@ set -euo pipefail
 # deploy.sh - Build React app and deploy to gh-pages branch
 # Similar to GitHub Pages serving from a branch
 # Usage: ./deploy.sh [--push] [--no-build]
-#
-# - Builds the app (npm run build) -> dist/
-# - Creates/updates gh-pages branch with contents of dist/
-# - Generates a commit on gh-pages branch
-# - Optionally pushes to origin if --push flag or interactive prompt
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT_DIR"
@@ -33,29 +28,23 @@ for arg in "$@"; do
   esac
 done
 
-# Fix npm registry if env is broken (common in Meta dev env where registry is set to http://127.0.0.1:1)
-# We override to official registry for install/build steps
+# Fix npm registry for Meta dev env
 if [[ "${npm_config_registry:-}" == "http://127.0.0.1:1" ]]; then
-  echo "Detected broken npm_config_registry=${npm_config_registry}, overriding to https://registry.npmjs.org"
+  echo "Detected broken npm_config_registry, overriding to https://registry.npmjs.org"
   export npm_config_registry="https://registry.npmjs.org"
 fi
-
 configure_npm() {
-  # Ensure npm uses a valid registry if current is loopback
-  local current_registry
-  current_registry="$(npm config get registry 2>/dev/null || echo "unknown")"
-  if [[ "$current_registry" == "http://127.0.0.1:1"* ]]; then
-    echo "Fixing npm registry from $current_registry to https://registry.npmjs.org"
+  local cur
+  cur="$(npm config get registry 2>/dev/null || echo "unknown")"
+  if [[ "$cur" == "http://127.0.0.1:1"* ]]; then
+    echo "Fixing npm registry from $cur to https://registry.npmjs.org"
     export npm_config_registry="https://registry.npmjs.org"
   fi
 }
 configure_npm
 
 echo "=== Building site ==="
-if [ ! -f "package.json" ]; then
-  echo "Error: package.json not found in $ROOT_DIR"
-  exit 1
-fi
+if [ ! -f "package.json" ]; then echo "Error: package.json not found"; exit 1; fi
 
 if [ "$NO_BUILD" = false ]; then
   if [ ! -d "node_modules" ]; then
@@ -65,41 +54,24 @@ if [ "$NO_BUILD" = false ]; then
   echo "Running build..."
   npm run build
 else
-  echo "Skipping build (--no-build flag)"
+  echo "Skipping build (--no-build)"
 fi
 
-if [ ! -d "$BUILD_DIR" ]; then
-  echo "Error: Build directory $BUILD_DIR not found"
-  exit 1
-fi
+if [ ! -d "$BUILD_DIR" ]; then echo "Error: $BUILD_DIR not found"; exit 1; fi
+if [ -z "$(ls -A "$BUILD_DIR")" ]; then echo "Error: $BUILD_DIR empty"; exit 1; fi
 
-if [ -z "$(ls -A "$BUILD_DIR")" ]; then
-  echo "Error: Build directory $BUILD_DIR is empty"
-  exit 1
-fi
-
-# Ensure CNAME exists in build output for custom domain (jonaharris.com)
-if [ -f "public/CNAME" ] && [ ! -f "$BUILD_DIR/CNAME" ]; then
-  echo "Copying public/CNAME to $BUILD_DIR/CNAME"
-  cp public/CNAME "$BUILD_DIR/"
-elif [ -f "CNAME" ] && [ ! -f "$BUILD_DIR/CNAME" ]; then
-  echo "Copying CNAME to $BUILD_DIR/CNAME"
-  cp CNAME "$BUILD_DIR/"
-fi
-
-# Ensure .nojekyll to bypass Jekyll processing on gh-pages
+if [ -f "public/CNAME" ] && [ ! -f "$BUILD_DIR/CNAME" ]; then cp public/CNAME "$BUILD_DIR/"; fi
+if [ -f "CNAME" ] && [ ! -f "$BUILD_DIR/CNAME" ]; then cp CNAME "$BUILD_DIR/"; fi
 touch "$BUILD_DIR/.nojekyll"
 
 echo "Build output:"
 ls -lh "$BUILD_DIR"
 echo ""
 
-# Function to deploy when gh-pages branch already exists
 deploy_via_worktree() {
   local GH_PAGES_DIR
   GH_PAGES_DIR="$(mktemp -d)"
   echo "=== Preparing gh-pages worktree at $GH_PAGES_DIR ==="
-
   cleanup() {
     echo "Cleaning up worktree..."
     git worktree remove --force "$GH_PAGES_DIR" 2>/dev/null || rm -rf "$GH_PAGES_DIR"
@@ -108,39 +80,34 @@ deploy_via_worktree() {
   trap cleanup EXIT
 
   if git show-ref --verify --quiet refs/heads/gh-pages; then
-    echo "Found local gh-pages branch"
     git worktree add "$GH_PAGES_DIR" gh-pages
   elif git show-ref --verify --quiet refs/remotes/origin/gh-pages; then
-    echo "Found remote origin/gh-pages, creating local tracking branch"
     git worktree add -b gh-pages "$GH_PAGES_DIR" origin/gh-pages
   else
-    echo "ERROR: deploy_via_worktree called but gh-pages branch does not exist"
+    echo "ERROR: deploy_via_worktree called but gh-pages missing"
     exit 1
   fi
 
-  echo ""
-  echo "=== Copying built files to gh-pages ==="
+  echo "=== Copying built files ==="
   find "$GH_PAGES_DIR" -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} + 2>/dev/null || true
   cp -r "$BUILD_DIR"/* "$GH_PAGES_DIR"/
-  if [ -f "$BUILD_DIR/.nojekyll" ]; then
-    cp "$BUILD_DIR/.nojekyll" "$GH_PAGES_DIR/"
-  fi
-  if [ -f "$BUILD_DIR/CNAME" ]; then
-    cp "$BUILD_DIR/CNAME" "$GH_PAGES_DIR/"
-  fi
+  for dot in "$BUILD_DIR"/.*; do
+    [ -e "$dot" ] || continue
+    b="$(basename "$dot")"
+    [[ "$b" == "." || "$b" == ".." ]] && continue
+    cp "$dot" "$GH_PAGES_DIR"/ 2>/dev/null || true
+  done
 
-  ls -la "$GH_PAGES_DIR" | head -n 30
+  ls -la "$GH_PAGES_DIR" | head -n 40
 
-  echo ""
-  echo "=== Committing to gh-pages ==="
+  echo "=== Committing ==="
   (
     cd "$GH_PAGES_DIR"
     git add -A
     if git diff --cached --quiet; then
-      echo "No changes to commit on gh-pages branch (build output identical)"
+      echo "No changes to commit"
       exit 0
     fi
-
     git commit -m "Deploy to gh-pages from ${CURRENT_BRANCH} ${COMMIT_HASH}
 
 Source commit: $(git -C "$ROOT_DIR" rev-parse HEAD)
@@ -148,92 +115,89 @@ ${COMMIT_MSG}
 
 Built with: npm run build
 "
-
     echo "New commit: $(git log --oneline -1)"
-
     if [ "$PUSH" = true ]; then
-      echo "Pushing gh-pages to origin..."
       git push origin gh-pages
     elif git remote | grep -q "^origin$"; then
-      echo ""
-      # Only prompt if stdin is a TTY
       if [ -t 0 ]; then
-        read -p "Push gh-pages to origin? (y/N) " -n 1 -r || true
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-          git push origin gh-pages
-        else
-          echo "Skipping push. Run: git push origin gh-pages"
-        fi
+        read -p "Push gh-pages to origin? (y/N) " -n 1 -r || true; echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then git push origin gh-pages; else echo "Skip push, run: git push origin gh-pages"; fi
       else
-        echo "Non-interactive shell, skipping push. Run: git push origin gh-pages"
+        echo "Non-interactive, skip push. Run: git push origin gh-pages"
       fi
     fi
   )
-
   trap - EXIT
   cleanup
 }
 
-# Function to deploy when gh-pages does NOT exist -> create orphan branch
 deploy_new_orphan() {
-  echo "=== No gh-pages branch found, creating new orphan branch ==="
-  # Save current state
-  local prev_branch
-  prev_branch="$(git rev-parse --abbrev-ref HEAD)"
+  echo "=== No gh-pages branch found, creating new orphan branch via temp repo ==="
+  local TMP_REPO
+  TMP_REPO="$(mktemp -d)"
+  echo "Temp repo: $TMP_REPO"
 
-  # Ensure working directory is clean-ish? We will stash changes to dist? dist is ignored, so fine
-  # Create orphan branch
-  git checkout --orphan gh-pages
+  cleanup_tmp() {
+    rm -rf "$TMP_REPO"
+  }
+  trap cleanup_tmp EXIT
 
-  # Remove all files from index and working tree (except dist and .git)
-  git reset --hard 2>/dev/null || true
-  # Clean untracked files except dist and node_modules
-  # First, remove everything except BUILD_DIR and .git
-  find . -mindepth 1 -maxdepth 1 ! -name '.git' ! -name "$BUILD_DIR" ! -name '.gitignore' -exec rm -rf {} + 2>/dev/null || true
+  # Init temp repo
+  (
+    cd "$TMP_REPO"
+    git init -q
+    git config user.name "$(git -C "$ROOT_DIR" config user.name || echo "deploy")"
+    git config user.email "$(git -C "$ROOT_DIR" config user.email || echo "deploy@local")"
 
-  # Copy build output to root
-  cp -r "$BUILD_DIR"/* ./
-  if [ -f "$BUILD_DIR/.nojekyll" ]; then
-    cp "$BUILD_DIR/.nojekyll" ./
-  fi
-  if [ -f "$BUILD_DIR/CNAME" ]; then
-    cp "$BUILD_DIR/CNAME" ./
-  fi
+    # Copy build output to temp repo root
+    cp -r "$ROOT_DIR/$BUILD_DIR"/* ./
+    for dot in "$ROOT_DIR/$BUILD_DIR"/.*; do
+      [ -e "$dot" ] || continue
+      b="$(basename "$dot")"
+      [[ "$b" == "." || "$b" == ".." ]] && continue
+      cp "$dot" ./ 2>/dev/null || true
+    done
+    touch .nojekyll
+    if [ ! -f CNAME ]; then
+      if [ -f "$ROOT_DIR/public/CNAME" ]; then cp "$ROOT_DIR/public/CNAME" ./CNAME; fi
+      if [ -f "$ROOT_DIR/CNAME" ] && [ ! -f ./CNAME ]; then cp "$ROOT_DIR/CNAME" ./CNAME; fi
+    fi
 
-  # Also ensure CNAME and .nojekyll are included (they are hidden? CNAME visible, .nojekyll hidden)
-  touch .nojekyll
-  if [ -f "$ROOT_DIR/CNAME" ] && [ ! -f "./CNAME" ]; then
-    cp "$ROOT_DIR/CNAME" ./
-  fi
-  if [ -f "$ROOT_DIR/public/CNAME" ] && [ ! -f "./CNAME" ]; then
-    cp "$ROOT_DIR/public/CNAME" ./
-  fi
+    echo "Temp repo files:"
+    ls -la
 
-  git add -A
-
-  git commit -m "Initial deploy to gh-pages from ${prev_branch} ${COMMIT_HASH}
+    git add -A
+    git commit -q -m "Initial deploy to gh-pages from ${CURRENT_BRANCH} ${COMMIT_HASH}
 
 Source commit: ${COMMIT_HASH}
 ${COMMIT_MSG}
 
 Built with: npm run build
 "
+    echo "Created temp commit: $(git log --oneline -1)"
 
-  echo "Created gh-pages branch with commit: $(git log --oneline -1)"
+    # Push this orphan branch into main repo as gh-pages
+    # Use git push to filesystem path
+    git push -q "$ROOT_DIR" HEAD:gh-pages
+    echo "Pushed gh-pages branch to $ROOT_DIR"
+  )
 
-  # Checkout back to previous branch
-  git checkout "$prev_branch"
+  trap - EXIT
+  cleanup_tmp
+
+  # Now we have gh-pages branch in main repo, show it
+  echo "gh-pages branch created:"
+  git log gh-pages --oneline -1
+  git show gh-pages --stat --oneline | head -n 20
 
   if [ "$PUSH" = true ] && git remote | grep -q "^origin$"; then
     echo "Pushing gh-pages to origin..."
     git push origin gh-pages
   else
-    echo "gh-pages branch created locally. Push with: git push origin gh-pages"
+    echo "gh-pages branch ready locally. Push with: git push origin gh-pages"
   fi
 }
 
-# Main deploy logic
 if git show-ref --verify --quiet refs/heads/gh-pages || git show-ref --verify --quiet refs/remotes/origin/gh-pages; then
   deploy_via_worktree
 else
@@ -242,7 +206,6 @@ fi
 
 echo ""
 echo "=== Deploy complete ==="
-echo "gh-pages branch now contains the built site"
-echo "If configured to serve from gh-pages branch on GitHub, your site will be live"
-echo "Custom domain CNAME: $(cat "$BUILD_DIR/CNAME" 2>/dev/null || echo "not found")"
+echo "gh-pages contains built site"
+if [ -f "$BUILD_DIR/CNAME" ]; then echo "CNAME: $(cat "$BUILD_DIR/CNAME")"; fi
 echo "Done."
