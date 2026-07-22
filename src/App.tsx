@@ -11,9 +11,12 @@ const App: FC = () => {
             <div className="section_title">About</div>
             <div className="section_content">
               I&apos;m a M.Sc. graduate of{' '}
-              <a href="https://cs.huji.ac.il/">The Hebrew University of Jerusalem</a>. My research
-              interests include cryptocurrency protocols, cryptography and security. I&apos;m also
-              passionate about coding and designing large systems.
+              <a href="https://cs.huji.ac.il/">
+                The Hebrew University of Jerusalem
+              </a>
+              . My research interests include cryptocurrency protocols,
+              cryptography and security. I&apos;m also passionate about coding
+              and designing large systems.
             </div>
           </div>
 
@@ -27,15 +30,19 @@ const App: FC = () => {
                   </span>
                   ,{' '}
                   <span className="publication_body">
-                    Jona Harris and Aviv Zohar, in ACM conference on Advances in Financial
-                    Technologies (AFT&apos;20).{' '}
-                    <a href="https://dl.acm.org/doi/10.1145/3419614.3423248">ACM</a>,{' '}
-                    <a href="https://link.medium.com/tUq7jDxeIab">Medium</a>,{' '}
+                    Jona Harris and Aviv Zohar, in ACM conference on Advances in
+                    Financial Technologies (AFT&apos;20).{' '}
+                    <a href="https://dl.acm.org/doi/10.1145/3419614.3423248">
+                      ACM
+                    </a>
+                    , <a href="https://link.medium.com/tUq7jDxeIab">Medium</a>,{' '}
                     <a href="https://youtu.be/oWfoVojRs90">YouTube</a>
                   </span>
                 </li>
                 <li>
-                  <span className="publication_title">The Cryptocurrency Filter-Bubble.</span>{' '}
+                  <span className="publication_title">
+                    The Cryptocurrency Filter-Bubble.
+                  </span>{' '}
                   <span className="publication_body">
                     Jona Harris and Aviv Zohar. 2018.{' '}
                     <a href="https://medium.com/blockchains-huji/the-cryptocurrency-filter-bubble-faa0901f0e0a">
@@ -50,8 +57,9 @@ const App: FC = () => {
           <div className="section">
             <div className="section_title">Contact</div>
             <div className="section_content">
-              For any question, collaboration opportunities or asking for ransom, please contact me
-              at <a href="mailto:jonahar@gmail.com">jonahar@gmail.com</a>.
+              For any question, collaboration opportunities or asking for
+              ransom, please contact me at{' '}
+              <a href="mailto:jonahar@gmail.com">jonahar@gmail.com</a>.
             </div>
           </div>
         </div>
@@ -59,13 +67,20 @@ const App: FC = () => {
         <div id="main_secondary">
           <div id="profile_pic_container">
             <div id="profile_pic_inner">
-              <img src={`${import.meta.env.BASE_URL}profile.jpg`} width="100%" alt="Jona Harris" />
+              <img
+                src={`${import.meta.env.BASE_URL}profile.jpg`}
+                width="100%"
+                alt="Jona Harris"
+              />
             </div>
           </div>
 
           <div id="social_buttons">
             <span className="icon">
-              <a href="https://www.linkedin.com/in/jona-harris" aria-label="LinkedIn">
+              <a
+                href="https://www.linkedin.com/in/jona-harris"
+                aria-label="LinkedIn"
+              >
                 <i className="fa fa-linkedin-square" />
               </a>
             </span>
