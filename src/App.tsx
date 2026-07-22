@@ -82,8 +82,9 @@ const App: FC = () => {
       <div id="epilogue">
         <hr className="solid" />
         <div className="quote">
-          &ldquo;Not everyone can become a great artist, but a great artist can come from
-          anywhere&rdquo;
+          &ldquo;Not everyone can become a great artist,
+          <br />
+          but a great artist can come from anywhere&rdquo;
         </div>
       </div>
     </div>
